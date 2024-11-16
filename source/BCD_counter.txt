@@ -1,0 +1,25 @@
+module dff_behavioral(D, clk, sync_reset, Q, Qn); 
+input D, clk, sync_reset;
+output reg Q, Qn;
+always @ (posedge clk or  posedge sync_reset) 
+begin
+if(sync_reset== 1) begin
+Q <= 0;
+Qn <= 1;
+end
+ else begin
+Q <= D; 
+Qn <= !D; 
+end
+end 
+endmodule
+module BCDcouter(clk_in, c, Q0, Q1, Q2, Q3);
+output Q0, Q1, Q2, Q3;
+input clk_in, c;
+dff_behavioral D0(.D(e0), .clk(clk_in), .sync_reset(c0), .Q(Q0), .Qn(e0));
+dff_behavioral D1(.D(e1), .clk(e0), .sync_reset(c0), .Q(Q1), .Qn(e1));
+dff_behavioral D2(.D(e2), .clk(e1), .sync_reset(c0), .Q(Q2), .Qn(e2));
+dff_behavioral D3(.D(e3), .clk(e2), .sync_reset(c0), .Q(Q3), .Qn(e3));
+and clr(b0, Q1, Q3);
+or dc(c0, b0, c);
+endmodule
